@@ -1,0 +1,29 @@
+<html>
+<head>
+    <style>
+        h2{
+            color:blue;
+        }
+        input{
+            overflow: auto;
+        }
+    </style>
+</head> 
+<body>
+    <h2>Edit Menu Item {{item.name}} For Restaurant: {{restaurant.name}}</h2>
+
+    <form method='POST' enctype='multipart/form-data' 
+        action='{{url_for('editMenuItem', restaurant_id = restaurant.id, menu_id = item.id) }}'>
+        <input name='editMenuItemName' type='text' placeholder="{{item.name}}">
+        </br>
+        <input name='editMenuItemPrice' type='text' placeholder="{{item.price}}">
+        </br>
+        <input name='editMenuItemDescription' type='text' placeholder="{{item.description}}">
+        </br>
+        <input type='submit' value='Submit Changes'>
+    </form>
+    <a href='{{url_for('restaurantMenu', restaurant_id =restaurant.id )}}'>Cancel</a>
+
+</body>
+
+</html>
