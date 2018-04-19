@@ -103,7 +103,7 @@ class webserverHandler(BaseHTTPRequestHandler):
                 for r in restaurants:
                     output += "----%s----" % r.name
                     output += "<p><a href='restaurants/%s/edit'>Edit</a>" % r.id
-                    output += "<a href='#'>Delete</a></p></br>"
+                    output += "<a href='restaurants/%s/delete'>Delete</a></p></br>" % r.id
 
                 output += "</body></html>"
 
@@ -138,13 +138,42 @@ class webserverHandler(BaseHTTPRequestHandler):
                 output += "</body></html>"
 
                 self.wfile.write(output)
+            if self.path.endswith("/delete"):
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                rest_id = self.path.split("/")[2]
+                rest_del = session.query(Restaurant).filter_by(id = rest_id).first()
+                name = rest_del.name
+                print (rest_id)
+                output = ""
+                output += "<html>"
+                output += """
+                <head>
+                <style>
+                    a {margin : 10px;}
+                </style>
+                </head>
+                """
+                output += "<body><h1>Edit Restaurant</h1>"
+                output += """
+                    <h2>Warning you are going to delete %s from database</h2>
+                    <form method = 'POST' enctype='multipart/form-data' action='/restaurants/%s/delete'>
+                    <input type='submit' value='Delete'>
+                    </form>
+                """ % ( unicode(name), unicode(rest_id))
+                
 
+                output += "</body></html>"
 
+                self.wfile.write(output)
 
 
 
         except IOError:
             self.send_error(404, "File Not Found %s" % self.path)
+    
+    
     def do_POST(self):
         try:
             if self.path.endswith("/restaurants/new"):
@@ -213,13 +242,28 @@ class webserverHandler(BaseHTTPRequestHandler):
 
                 print(editRestaurantName[0])
                 editRestaurant = session.query(Restaurant).filter_by(id = rest_id).first()
-                editRestaurant.name = editRestaurantName[0]
-                session.add(editRestaurant)
-                session.commit()
+                if editRestaurant != []:
+                    editRestaurant.name = editRestaurantName[0]
+                    session.add(editRestaurant)
+                    session.commit()
+    
+                    self.send_response(301)
+                    self.send_header('Location', '/restaurants')
+                    self.end_headers()
+            if self.path.endswith("/delete"):
+                ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+                # if ctype == 'multipart/form-data':
+                #    fields = cgi.parse_multipart(self.rfile, pdict)
+                #    deleteRestaurantName = fields.get('deleteRestaurantName')
+                rest_id = self.path.split("/")[2]
+                deleteRestaurant = session.query(Restaurant).filter_by(id = rest_id).first()
+                if deleteRestaurant:    
+                    session.delete(deleteRestaurant)
+                    session.commit()
+                    self.send_response(301)
+                    self.send_header('Location', '/restaurants')
+                    self.end_headers()
 
-                self.send_response(301)
-                self.send_header('Location', '/restaurants')
-                self.end_headers()
             
         except IOError:
             pass
