@@ -1,0 +1,9 @@
+<h1>Here's a delicious menu for restaurant: {{restaurant.name}} </h1>
+{% for m in menu_items%}
+    <p>{{m.name}}</p>
+    <p>{{m.price}}</p>
+    <p>{{m.course}}</p>
+    <p>{{m.description}}</p>
+    <p>{{m.id}}</p>
+    <hr>
+{% endfor %}

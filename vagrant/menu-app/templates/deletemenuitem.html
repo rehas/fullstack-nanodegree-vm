@@ -1,0 +1,6 @@
+<h1>Youre removing Menu Item : {{menu_item.name}} from Restaurant : {{restaurant.name}} But WHY?</h1>
+<h1>Are you really really sure?</h1>
+<form method="POST" enctype='multipart/form-data' action='#'>
+    <input type="submit" value="It was disgusting anyway!">
+</form>
+<a href='{{url_for('ListRestaurantMenu', restaurant_id = restaurant.id ) }}'>N'ah I'm good, let it be!</a>
