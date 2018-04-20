@@ -1,5 +1,5 @@
 <h1>You're editing Menu Item : {{menu_item.name}} for Restaurant : {{restaurant.name}} Careful! </h1>
-<form method="POST" enctype='multipart/form-data' action='#'>
+<form method="POST" enctype='multipart/form-data' action='{{url_for('EditMenuItem', restaurant_id = restaurant.id, menu_item_id = menu_item.id)}}'>
     <input type="text" placeholder="{{menu_item.name}}" name="editMenuItemName">
     </br>
     <input type="text" placeholder="{{menu_item.price}} Discount Please :)" name="editMenuItemPrice">

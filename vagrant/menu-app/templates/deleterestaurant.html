@@ -1,6 +1,6 @@
 <h1>You are going to remove Restaurant: {{restaurant.name}}</h1>
 <h1>Are you sure?</h1>
-<form method="POST" enctype='multipart/form-data' action='#'>
+<form method="POST" enctype='multipart/form-data' action='{{url_for('DeleteRestaurant', restaurant_id = restaurant.id)}}'>
     <input type="submit" value="It was useless anyway!">
 </form>
 <a href='{{url_for('ListRestaurants')}}'>N'ah I'm good, let it be!</a>

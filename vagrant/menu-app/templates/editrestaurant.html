@@ -1,5 +1,5 @@
 <h1>Edit Restaurant: {{restaurant.name}}</h1>
-<form method="POST" enctype='multipart/form-data' action='#'>
+<form method="POST" enctype='multipart/form-data' action='{{url_for('EditRestaurant', restaurant_id = restaurant.id)}}'>
     <input type="text" placeholder="{{restaurant.name}}" name="editRestaurantName">
     <input type="submit" name="Give me a new name!">
 </form>
