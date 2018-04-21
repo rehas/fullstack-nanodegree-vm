@@ -6,7 +6,7 @@
 <body>
 
 <h1>Restaurants Home Page</h1>
-
+<a href='{{url_for('NewRestaurant')}}'>Add a new Restaurant</a>
 <span class="flash">
     {% with messages = get_flashed_messages()%}
     {% if messages %}
