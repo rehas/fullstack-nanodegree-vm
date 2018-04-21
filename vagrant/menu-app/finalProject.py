@@ -120,6 +120,30 @@ def DeleteMenuItem(restaurant_id, menu_item_id):
         return redirect(url_for('ListRestaurantMenu', restaurant_id = restaurant.id))
 
 
+# Restaurant List as JSON
+@app.route('/restaurants/JSON')
+def ListRestaurantsJSON():
+    restaurants = session.query(Restaurant).all()
+    return jsonify(Restaurants = [r.serialize for r in restaurants])
+
+
+# Menu of a Restaurant as JSON
+@app.route('/restaurants/<int:restaurant_id>/menu/JSON')
+def ListRestaurantMenuJSON(restaurant_id):
+    menu_items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()    
+    return jsonify(MENU =[mi.serialize for mi in menu_items])
+
+
+# Menu item of restaurant as JSON
+@app.route('/restaurants/<int:restaurant_id>/menu/<int:menu_item_id>/JSON')
+def MenuItemJSON(restaurant_id, menu_item_id):
+    menu_item = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).filter_by(id = menu_item_id).first()
+    if menu_item == None:
+        return redirect(url_for('ListRestaurantMenuJSON', restaurant_id = restaurant_id))
+    else:
+        return jsonify(MenuItem = menu_item.serialize)
+
+
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
