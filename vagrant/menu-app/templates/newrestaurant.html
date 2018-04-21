@@ -1,7 +1,16 @@
-<h1>Add a new Restaurant</h1>
-<form method="POST" enctype='multipart/form-data' 
+<html>
+
+<head>
+    <link rel="stylesheet" href='{{url_for('static', filename = 'styles.css')}}'>
+</head>
+<body>
+    
+    <h1>Add a new Restaurant</h1>
+    <form method="POST" enctype='multipart/form-data' 
     action='{{url_for('NewRestaurant')}}'>
     <input type="text" placeholder="What's the name of our new restaurant" 
-        name="newRestaurantName">
+    name="newRestaurantName">
     <input type="submit" name="Create New Restaurant!">
 </form>
+</body>
+</html>

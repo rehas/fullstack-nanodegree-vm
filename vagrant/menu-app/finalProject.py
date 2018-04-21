@@ -33,6 +33,7 @@ def NewRestaurant():
         newRestaurant = Restaurant(name = request.form['newRestaurantName'])
         session.add(newRestaurant)
         session.commit()
+        flash("New Restaurant Created: %s" % newRestaurant.name)
         return redirect(url_for('ListRestaurants'))
 
 
@@ -46,6 +47,7 @@ def EditRestaurant(restaurant_id):
         restaurant.name = request.form['editRestaurantName']
         session.add(restaurant)
         session.commit()
+        flash("Restaurant Succesfully Edited: %s" % restaurant.name)
         return redirect(url_for('ListRestaurants'))
 
 # Delete given restaurant
@@ -57,6 +59,7 @@ def DeleteRestaurant(restaurant_id):
     else:
         session.delete(restaurant)
         session.commit()
+        flash("Restaurant Succesfully Deleted: %s" % restaurant.name)
         return redirect(url_for('ListRestaurants'))
 
 # List Menu Items of a Restaurant
@@ -81,6 +84,7 @@ def AddMenuItemToRestaurant(restaurant_id):
         newItem.restaurant_id = restaurant.id
         session.add(newItem)
         session.commit()
+        flash("New Menu Item Created: %s for Restaurant: %s" % (newItem.name, restaurant.name))
         return redirect(url_for('ListRestaurantMenu', restaurant_id = restaurant.id))
 
 # Edit menu item of restaurant
@@ -101,6 +105,7 @@ def EditMenuItem(restaurant_id, menu_item_id):
         menu_item.course = request.form['editMenuItemCourse']           or menu_item.course
         session.add(menu_item)
         session.commit()
+        flash("Menu Item Succesfully Edited: %s for Restaurant: %s" % (menu_item.name, restaurant.name))
         return redirect(url_for('ListRestaurantMenu', restaurant_id = restaurant.id))
 
 
@@ -117,6 +122,7 @@ def DeleteMenuItem(restaurant_id, menu_item_id):
     else:
         session.delete(menu_item)
         session.commit()
+        flash("Menu Item Succesfully Deleted: %s for Restaurant: %s" % (menu_item.name, restaurant.name))
         return redirect(url_for('ListRestaurantMenu', restaurant_id = restaurant.id))
 
 

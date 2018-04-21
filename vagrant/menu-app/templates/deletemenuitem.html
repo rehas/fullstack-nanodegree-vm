@@ -1,7 +1,16 @@
-<h1>Youre removing Menu Item : {{menu_item.name}} from Restaurant : {{restaurant.name}} But WHY?</h1>
-<h1>Are you really really sure?</h1>
-<form method="POST" enctype='multipart/form-data' 
+<html>
+
+<head>
+    <link rel="stylesheet" href='{{url_for('static', filename = 'styles.css')}}'>
+</head>
+<body>
+    
+    <h1>Youre removing Menu Item : {{menu_item.name}} from Restaurant : {{restaurant.name}} But WHY?</h1>
+    <h1>Are you really really sure?</h1>
+    <form method="POST" enctype='multipart/form-data' 
     action='{{url_for('DeleteMenuItem', restaurant_id = restaurant.id, menu_item_id = menu_item.id)}}'>
     <input type="submit" value="It was disgusting anyway!">
 </form>
 <a href='{{url_for('ListRestaurantMenu', restaurant_id = restaurant.id ) }}'>N'ah I'm good, let it be!</a>
+</body>
+</html>
