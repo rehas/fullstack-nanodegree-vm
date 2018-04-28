@@ -89,15 +89,17 @@ def findARestaurant(meal, location):
     # print(rest_image)
     
     print("--------------------RESULT---------------\n")
-    print("Restaurant Name => \n %s") % rest_name
-    print("Restaurant Address => \n %s ") % rest_Address
-    print("Restaurant image url => \n %s") % rest_image
+    # print("Restaurant Name => \n %s") % rest_name
+    # print("Restaurant Address => \n %s ") % rest_Address
+    # print("Restaurant image url => \n %s") % rest_image
 
     restaurant = {}
 
     restaurant["name"] = rest_name
     restaurant["address"] = rest_Address
     restaurant["image"] = rest_image
+
+    print(restaurant)
 
     return restaurant
 

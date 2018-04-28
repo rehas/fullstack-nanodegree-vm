@@ -28,11 +28,32 @@ app = Flask(__name__)
 
 @app.route('/restaurants', methods = ['GET', 'POST'])
 def all_restaurants_handler():
+    if request.method == 'GET':
+        restaurants = session.query(Restaurant).all()
+        return jsonify(restaurants = [r.serialize for r in restaurants])
+    if request.method == 'POST':
+        location = request.args.get('location')
+        mealType = request.args.get('mealType')
+
+        foundRest = findARestaurant(mealType, location)
+
+        newRest = Restaurant( restaurant_name = foundRest['name'])
+        newRest.restaurant_address = foundRest['address']
+        newRest.restaurant_image = foundRest['image']
+
+        session.add(newRest)
+        session.commit()
+        #print(foundRest)
+        return jsonify(restaurant = newRest.serialize)
+
   #YOUR CODE HERE
     
 @app.route('/restaurants/<int:id>', methods = ['GET','PUT', 'DELETE'])
 def restaurant_handler(id):
+    
+    return
   #YOUR CODE HERE
+
 
 if __name__ == '__main__':
     app.debug = True
