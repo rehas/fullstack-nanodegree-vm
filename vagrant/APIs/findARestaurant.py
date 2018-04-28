@@ -18,6 +18,9 @@ cheeseburger-34314_1280.png?direct"
 def findARestaurant(meal, location):
     latitude, longitude = getGCL(location)
 
+    if latitude == "ZERO_RESULTS" or longitude == "ZERO_RESULTS":
+        return "FourSquare can't find any results"
+
     # print("Latitude => %s ") % latitude 
     # print("Longitude => %s ") % longitude
 

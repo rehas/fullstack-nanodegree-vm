@@ -37,6 +37,9 @@ def all_restaurants_handler():
 
         foundRest = findARestaurant(mealType, location)
 
+        if foundRest == "FourSquare can't find any results" or foundRest == "FourSquare is not responding":
+            return jsonify({"Error": "No restaurants found for %s in %s" % (mealType, location)})
+
         newRest = Restaurant( restaurant_name = foundRest['name'])
         newRest.restaurant_address = foundRest['address']
         newRest.restaurant_image = foundRest['image']

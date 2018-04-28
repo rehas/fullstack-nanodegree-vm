@@ -34,11 +34,12 @@ def getGCL(inputString):
         # print(result)
         i += 1
 
-
+    if result['status'] == 'ZERO_RESULTS':
+        return "ZERO_RESULTS","ZERO_RESULTS"
     #print(url)
     #response, content = h.request(url, 'GET')
     #result = json.loads(content)
-    #print (response)
+    print (result)
     # print("\n\n STATUS => %s") %result['status']
     # print("\n")
     #print (result)
