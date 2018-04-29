@@ -16,13 +16,36 @@ session = DBSession()
 app = Flask(__name__)
 
 #ADD @auth.verify_password here
+@auth.verify_password
+def verify_password(uname, password):
+    user = session.query(User).filter_by(username = uname).first()
+    if not user or not user.verify_password(password):
+        return False
+    g.user = user
+    return True
 
 #ADD a /users route here
+@app.route('/users', methods = ['POST'])
+def newUser():
+    print(request)
 
+    print(request.json)
+    username = request.json.get('username')
+    password = request.json.get('password')
+    if username is None or password is None:
+        abort(400)
+    if session.query(User).filter_by(username = username).first() is not None:
+        abort(400)
+    user  = User(username = username)
+    user.hash_password(password)
+    session.add(user)
+    session.commit()
+    return jsonify({'username': user.username}) , 201
 
 
 @app.route('/bagels', methods = ['GET','POST'])
 #protect this route with a required login
+@auth.login_required
 def showAllBagels():
     if request.method == 'GET':
         bagels = session.query(Bagel).all()
