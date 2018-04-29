@@ -25,7 +25,32 @@ app = Flask(__name__)
 app = Flask(__name__)
 #ADD RATE LIMITING CODE HERE
 
+class limitMe(object):
+    expiration_delay = 10
 
+    def __init__(self, key_prefix, limit, per, send_x_headers):
+        self.reset = (int(time.time() // per)) *per + per
+        self.key = key_prefix + str(self.reset)
+        self.limit = limit
+        self.per = per
+        self.send_x_headers = send_x_headers
+        p.redis.pipeline()
+        p.expireat(self.key, self.reset + self.expiration_delay)
+        self.current = min(p.execute()[0] , limit)
+
+    remaining = property(lambda x: x.limit - x.current)
+    over_limit = property(lambda x: x.current >= x.limit)
+
+def get_vr_limit():
+    return getattr(g, 'get_view_rate_limit', None)
+
+def on_over_limit(limit):
+    return (jsonify({'data':'You have been hit by a smooth rate limit', 'error':'429'}) ,429)
+
+def ratelimit(limit, per = 300, send_x_headers = True, 
+    over_limit = on_over_limit, scope_func = lambda: request.remote_addr,
+    key_func = lambda: request.endpoint):
+    #def decorator
 
 @app.route('/catalog')
 def getCatalog():
