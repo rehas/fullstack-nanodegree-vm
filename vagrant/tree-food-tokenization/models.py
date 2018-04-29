@@ -23,7 +23,23 @@ class User(Base):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
     #Add a method to generate auth tokens here
-    
+    def generate_token(self, expiration = 120):
+        s = Serializer(secret_key, expires_in = expiration)
+        print(s)
+        print(s.dumps({'id': self.id}))
+        return s.dumps({'id': self.id})
+
+    @staticmethod
+    def verify_token(token):
+        s = Serializer(secret_key)
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            return None
+        except BadSignature:
+            return None
+        user_id = data['id']
+        return user_id
     #Add a method to verify auth tokens here
 
 class Product(Base):

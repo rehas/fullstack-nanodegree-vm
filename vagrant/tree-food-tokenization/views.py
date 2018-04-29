@@ -19,11 +19,30 @@ app = Flask(__name__)
 
 
 #ADD @auth.verify_password decorator here
+@auth.verify_password
+def verify_password(uname_or_token, password):
+    print("password => %s") % password
+    print("uname_or_token => %s") % uname_or_token
+    user_id = User.verify_token(uname_or_token)
+    print("user_id => %s") % user_id
+    if user_id:
+        user = session.query(User).filter_by(id = user_id).first()
+    else:
+        user = session.query(User).filter_by(username = uname_or_token).first()
+        if not user or not user.verify_password(password):
+            return False
+    g.user = user
+    return True
+
 
 
 #add /token route here to get a token for a user with login credentials
-
-
+@app.route('/token')
+@auth.login_required
+def createToken():
+    user = session.query(User).filter_by(username = g.user.username).first()
+    token = g.user.generate_token()
+    return jsonify({'token': token.decode('ascii')})
 
 
 @app.route('/users', methods = ['POST'])
@@ -88,8 +107,18 @@ def showCategoriedProducts(category):
         return jsonify(produce_products = [p.serialize for p in produce_items])
     
 
+def listAll():
+    allusers = session.query(User).all()
+    for u in allusers:
+        print ("User at %s" %u)
+        print (u.id)
+        print (u.username)
+        print (u.password_hash)
+        u.generate_token()
 
 if __name__ == '__main__':
     app.debug = True
+    # listAll()
     #app.config['SECRET_KEY'] = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     app.run(host='0.0.0.0', port=5000)
+    
